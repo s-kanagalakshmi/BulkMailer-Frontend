@@ -3,25 +3,27 @@
   margin: auto;
   padding: 2rem;
   width:30%;
+  height: 87vh;
   display:flex;
   flex-direction: column;
   font-family: sans-serif;
   border:1px solid blue;
-  background-color:rgb(24, 95, 226);
+  background-color:pink;
 }
 body{
-  background-color: gray;
+  background-color:rgb(209, 11, 11);
+  color: brown;
 }
 h1 {
   text-align: center;
-  color: #333;
+  color:brown;
 }
 
 .tagline {
   text-align: center;
   margin-bottom: 2rem;
   font-size: 1.1rem;
-  color: #666;
+  color: brown;
 }
 
 .form-group {
@@ -44,19 +46,20 @@ input[type="file"] {
   font-size: 1rem;
 }
 .send-button {
-  background-color: #007bff;
+  background-color: red;
   color: white;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border: none;
+  margin-bottom: 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   /* display: block; */
-  margin: 1rem auto 0;
+  margin: -1rem auto 0;
 }
 
 .send-button:hover {
-  background-color: #0056b3;
+  background-color: red;
 }
 

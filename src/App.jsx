@@ -5,50 +5,61 @@ import * as XLSX from "xlsx";
 
 function App() {
   const [msg, setmsg] = useState("")
+  const [subject,setsubject]=useState("")
   const [status, setstatus] = useState(false)
-  const [emailList,setemailList]=useState([])
+  const [emailList, setemailList] = useState([])
+
   const composeMsg = (evt) => {
     setmsg(evt.target.value)
   }
+const subjecthandle=(evt)=>{
+  setsubject(evt.target.value)
+}
   const sendMsg = (e) => {
     setstatus(true)
     axios.post("https://bulkmailer-backend-a03i.onrender.com/send", {
       msg: msg,
       emailList: emailList,
     })
-          .then((data) => {
-        if (data.data.success === true)
-           { alert("✅ Email sent!")
-            setstatus(false);
-            }
-        else {
-          alert(" FAiled")
+      .then((data) => {
+        if (data.data.success === true) {
+          alert("✅ Email sent!")
+          // Clear all fields after sending
+          setmsg(" ");
+          setemailList([]);
+          setsubject(" ")
+          setstatus(false);
+        } else {
+          alert("❌ Failed")
           setstatus(false);
         }
       })
-      .catch((err) => console.error("❌ Error:", err));
+      .catch((err) => {
+        console.error("❌ Error:", err);
+        setstatus(false);
+      });
   };
+
   const uploadfile = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-  
+
     reader.onload = (e) => {
       const data = e.target.result;
       const workbook = XLSX.read(data, { type: 'binary' });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
-  
+
       const emaillist = XLSX.utils.sheet_to_json(worksheet, { header: 'A' });
       console.log("Raw email list from Excel:", emaillist);
-  
+
       const totalList = emaillist.map(item => item.A);
       console.log("Extracted emails:", totalList);
-      setemailList(totalList); 
+      setemailList(totalList);
     };
-  
+
     reader.readAsBinaryString(file);
   };
-  
 
   return (
     <>
@@ -58,7 +69,7 @@ function App() {
 
         <div className="form-group">
           <label htmlFor="subject">Subject</label>
-          <input id="subject" type="text" placeholder="Enter email subject" />
+          <input id="subject" type="text" value={subject} onChange={subjecthandle} placeholder="Enter email subject" />
         </div>
 
         <div className="form-group">
@@ -75,7 +86,6 @@ function App() {
           <p>Emails Detected in Upload: <strong>{emailList.length}</strong></p>
         </div>
         <button type="button" className="send-button" onClick={sendMsg} >{status ? "Sending" : "Send Mail"}</button>
-
       </section>
     </>
   );
